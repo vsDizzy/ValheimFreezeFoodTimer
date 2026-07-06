@@ -1,5 +1,7 @@
 name: Manual Build & Release
 
+run-name: Manual Build & Release (${{ inputs.action }})
+
 on:
   workflow_dispatch:
     inputs:
@@ -58,7 +60,7 @@ jobs:
       - name: Auto Bump Version
         if: env.MODE == 'auto_bump'
         id: auto_bump
-        uses: anothrNick/github-tag-action@1.71.0
+        uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
@@ -73,6 +75,12 @@ jobs:
           fi
           echo "TAG=$TAG" >> $GITHUB_ENV
           echo "CLEAN_VERSION=${TAG#v}" >> $GITHUB_ENV
+
+      - name: Output Job Summary
+        run: |
+          echo "### 🚀 Build Info" >> $GITHUB_STEP_SUMMARY
+          echo "- **Action:** ${{ github.event.inputs.action }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** v${{ env.CLEAN_VERSION }}" >> $GITHUB_STEP_SUMMARY
 
       - name: Compile
         run: |
