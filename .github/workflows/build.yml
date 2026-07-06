@@ -58,7 +58,7 @@ jobs:
       - name: Auto Bump Version
         if: env.MODE == 'auto_bump'
         id: auto_bump
-        uses: anothrNick/github-tag-action@1.71.0
+        uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
